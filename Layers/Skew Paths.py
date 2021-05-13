@@ -23,7 +23,11 @@ def slantLayers(layers, angle):
     transform.shearXBy_atCenter_(slant, -xHeight / 2.0)
 
     for layer in selectedLayers:
-        for path in layer.paths:
+        if GlyphsApp.versionNumber >= 3:
+            paths = [shape for shape in layer.shapes if type(shape) is GSPath]
+        else:
+            paths = layer.paths
+        for path in paths:
             for node in path.nodes:
                 node.position = transform.transformPoint_(node.position)
         for anchor in layer.anchors:
